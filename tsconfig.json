@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.schemastore.org/tsconfig",
+  "_version": "24.0.0",
+
+  "compilerOptions": {
+    /* Alvos de Runtime */
+    "target": "es2024",
+    "lib": ["es2024"],
+
+    /* Sistema de Módulos (Corrigido) */
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+
+    /* Verificações de Tipo e Segurança */
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "outDir": "dist",
+    "rootDir": "src",
+  },
+}
