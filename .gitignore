@@ -1,5 +1,6 @@
-node_modules
+git remote add origin https://github.com/1montandon/anopoint_backend.gitnode_modules
 # Keep environment variables out of version control
 .env
 
 /generated/prisma
+node_modules
