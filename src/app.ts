@@ -11,7 +11,7 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "AnoPoint" });
 });
 
-app.use("/api/:lanchoneteSlug", router);
+app.use("/api/:restaurantSlug", router);
 
 app.listen(env.PORT, "0.0.0.0", () => {
   console.log(

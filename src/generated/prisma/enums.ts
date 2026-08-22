@@ -9,61 +9,61 @@
 * 🟢 You can import this file directly.
 */
 
-export const DiaSemana = {
-  SEGUNDA: 'SEGUNDA',
-  TERCA: 'TERCA',
-  QUARTA: 'QUARTA',
-  QUINTA: 'QUINTA',
-  SEXTA: 'SEXTA',
-  SABADO: 'SABADO',
-  DOMINGO: 'DOMINGO'
+export const Weekday = {
+  MONDAY: 'MONDAY',
+  TUESDAY: 'TUESDAY',
+  WEDNESDAY: 'WEDNESDAY',
+  THURSDAY: 'THURSDAY',
+  FRIDAY: 'FRIDAY',
+  SATURDAY: 'SATURDAY',
+  SUNDAY: 'SUNDAY'
 } as const
 
-export type DiaSemana = (typeof DiaSemana)[keyof typeof DiaSemana]
+export type Weekday = (typeof Weekday)[keyof typeof Weekday]
 
 
-export const OrigemPedido = {
-  SITE: 'SITE',
+export const OrderSource = {
+  WEBSITE: 'WEBSITE',
   WHATSAPP: 'WHATSAPP',
-  BALCAO: 'BALCAO'
+  COUNTER: 'COUNTER'
 } as const
 
-export type OrigemPedido = (typeof OrigemPedido)[keyof typeof OrigemPedido]
+export type OrderSource = (typeof OrderSource)[keyof typeof OrderSource]
 
 
-export const TipoPedido = {
+export const OrderType = {
   DELIVERY: 'DELIVERY',
-  RETIRADA: 'RETIRADA'
+  PICKUP: 'PICKUP'
 } as const
 
-export type TipoPedido = (typeof TipoPedido)[keyof typeof TipoPedido]
+export type OrderType = (typeof OrderType)[keyof typeof OrderType]
 
 
-export const FormaPagamento = {
-  DINHEIRO: 'DINHEIRO',
+export const PaymentMethod = {
+  CASH: 'CASH',
   PIX: 'PIX',
-  CREDITO: 'CREDITO',
-  DEBITO: 'DEBITO'
+  CREDIT_CARD: 'CREDIT_CARD',
+  DEBIT_CARD: 'DEBIT_CARD'
 } as const
 
-export type FormaPagamento = (typeof FormaPagamento)[keyof typeof FormaPagamento]
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
 
 
-export const StatusPedido = {
-  RECEBIDO: 'RECEBIDO',
-  EM_PREPARO: 'EM_PREPARO',
-  PRONTO: 'PRONTO',
-  SAIU_PARA_ENTREGA: 'SAIU_PARA_ENTREGA',
-  FINALIZADO: 'FINALIZADO',
-  CANCELADO: 'CANCELADO'
+export const OrderStatus = {
+  RECEIVED: 'RECEIVED',
+  PREPARING: 'PREPARING',
+  READY: 'READY',
+  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
 } as const
 
-export type StatusPedido = (typeof StatusPedido)[keyof typeof StatusPedido]
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
 
 
-export const StatusPagamento = {
-  PENDENTE: 'PENDENTE',
-  PAGO: 'PAGO'
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID'
 } as const
 
-export type StatusPagamento = (typeof StatusPagamento)[keyof typeof StatusPagamento]
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]

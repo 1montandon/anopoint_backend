@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -12,339 +7,318 @@ datasource db {
   provider = "postgresql"
 }
 
-enum DiaSemana {
-  SEGUNDA
-  TERCA
-  QUARTA
-  QUINTA
-  SEXTA
-  SABADO
-  DOMINGO
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
 }
 
-enum OrigemPedido {
-  SITE
+enum OrderSource {
+  WEBSITE
   WHATSAPP
-  BALCAO
+  COUNTER
 }
 
-enum TipoPedido {
+enum OrderType {
   DELIVERY
-  RETIRADA
+  PICKUP
 }
 
-enum FormaPagamento {
-  DINHEIRO
+enum PaymentMethod {
+  CASH
   PIX
-  CREDITO
-  DEBITO
+  CREDIT_CARD
+  DEBIT_CARD
 }
 
-enum StatusPedido {
-  RECEBIDO
-  EM_PREPARO
-  PRONTO
-  SAIU_PARA_ENTREGA
-  FINALIZADO
-  CANCELADO
+enum OrderStatus {
+  RECEIVED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
 }
 
-enum StatusPagamento {
-  PENDENTE
-  PAGO
+enum PaymentStatus {
+  PENDING
+  PAID
 }
 
-model Lanchonete {
+model Restaurant {
   id              Int      @id @default(autoincrement())
-  nome            String   @db.VarChar(120)
+  name            String   @db.VarChar(120)
   slug            String   @unique @db.VarChar(100)
   logoUrl         String?  @map("logo_url") @db.VarChar(500)
-  telefone        String   @db.VarChar(20)
-  ativo           Boolean  @default(true)
-  aceitaDelivery  Boolean  @default(true) @map("aceita_delivery")
-  aceitaRetirada  Boolean  @default(true) @map("aceita_retirada")
-  pedidoMinimo    Decimal  @default(0) @map("pedido_minimo") @db.Decimal(10, 2)
-  fusoHorario     String   @map("fuso_horario") @db.VarChar(50)
+  phone           String   @db.VarChar(20)
+  active          Boolean  @default(true)
+  acceptsDelivery Boolean  @default(true) @map("accepts_delivery")
+  acceptsPickup   Boolean  @default(true) @map("accepts_pickup")
+  minimumOrder    Decimal  @default(0) @map("minimum_order") @db.Decimal(10, 2)
+  timeZone        String   @map("time_zone") @db.VarChar(50)
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  usuarios      Usuario[]
-  horarios      HorarioFuncionamento[]
-  taxasEntrega  TaxaEntrega[]
-  clientes      Cliente[]
-  categorias    Categoria[]
-  adicionais    Adicional[]
-  pedidos       Pedido[]
+  users         User[]
+  businessHours BusinessHour[]
+  deliveryFees  DeliveryFee[]
+  customers     Customer[]
+  categories    Category[]
+  addOns        AddOn[]
+  orders        Order[]
 
-  @@map("lanchonete")
+  @@map("restaurant")
 }
 
-model Usuario {
-  id            Int      @id @default(autoincrement())
-  lanchoneteId  Int      @map("lanchonete_id")
-  nome          String   @db.VarChar(120)
-  email         String   @unique @db.VarChar(255)
-  senhaHash     String   @map("senha_hash") @db.VarChar(255)
-  ativo         Boolean  @default(true)
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+model User {
+  id           Int      @id @default(autoincrement())
+  restaurantId Int      @map("restaurant_id")
+  name         String   @db.VarChar(120)
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation(fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
 
-  @@index([lanchoneteId])
-  @@map("usuario")
+  @@index([restaurantId])
+  @@map("user")
 }
 
-model HorarioFuncionamento {
+model BusinessHour {
   id           Int       @id @default(autoincrement())
-  lanchoneteId Int       @map("lanchonete_id")
-  diaSemana    DiaSemana @map("dia_semana")
-  horaAbertura DateTime? @map("hora_abertura") @db.Time(0)
-  horaFechamento DateTime? @map("hora_fechamento") @db.Time(0)
-  fechado      Boolean   @default(false)
+  restaurantId Int       @map("restaurant_id")
+  weekday      Weekday
+  openingTime  DateTime? @map("opening_time") @db.Time(0)
+  closingTime  DateTime? @map("closing_time") @db.Time(0)
+  closed       Boolean   @default(false)
   createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation(fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
 
-  @@index([lanchoneteId, diaSemana])
-  @@map("horario_funcionamento")
+  @@index([restaurantId, weekday])
+  @@map("business_hour")
 }
 
-model TaxaEntrega {
+model DeliveryFee {
   id           Int      @id @default(autoincrement())
-  lanchoneteId Int      @map("lanchonete_id")
-  bairro       String   @db.VarChar(120)
-  valor        Decimal  @db.Decimal(10, 2)
-  ativo        Boolean  @default(true)
+  restaurantId Int      @map("restaurant_id")
+  neighborhood String   @db.VarChar(120)
+  amount       Decimal  @db.Decimal(10, 2)
+  active       Boolean  @default(true)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation(fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+  addresses  Address[]
 
-  enderecos Endereco[]
-
-  @@unique([lanchoneteId, bairro])
-  @@index([lanchoneteId])
-  @@map("taxa_entrega")
+  @@unique([restaurantId, neighborhood])
+  @@index([restaurantId])
+  @@map("delivery_fee")
 }
 
-model Cliente {
+model Customer {
   id           Int      @id @default(autoincrement())
-  lanchoneteId Int      @map("lanchonete_id")
-  nome         String   @db.VarChar(120)
-  telefone     String   @db.VarChar(20)
+  restaurantId Int      @map("restaurant_id")
+  name         String   @db.VarChar(120)
+  phone        String   @db.VarChar(20)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation(fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+  addresses  Address[]
+  orders     Order[]
 
-  enderecos Endereco[]
-  pedidos   Pedido[]
-
-  @@unique([lanchoneteId, telefone])
-  @@index([lanchoneteId])
-  @@map("cliente")
+  @@unique([restaurantId, phone])
+  @@index([restaurantId])
+  @@map("customer")
 }
 
-model Endereco {
+model Address {
   id            Int      @id @default(autoincrement())
-  clienteId     Int      @map("cliente_id")
-  taxaEntregaId Int?     @map("taxa_entrega_id")
-  rua           String   @db.VarChar(150)
-  bairro        String   @db.VarChar(120)
-  cidade        String   @db.VarChar(120)
-  numero        String   @db.VarChar(20)
-  complemento   String?  @db.VarChar(150)
+  customerId    Int      @map("customer_id")
+  deliveryFeeId Int?     @map("delivery_fee_id")
+  street        String   @db.VarChar(150)
+  neighborhood  String   @db.VarChar(120)
+  city          String   @db.VarChar(120)
+  number        String   @db.VarChar(20)
+  complement    String?  @db.VarChar(150)
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  cliente Cliente @relation( fields: [clienteId], references: [id], onDelete: Restrict)
+  customer    Customer     @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  deliveryFee DeliveryFee? @relation(fields: [deliveryFeeId], references: [id], onDelete: SetNull)
+  orders      Order[]
 
-  taxaEntrega TaxaEntrega? @relation( fields: [taxaEntregaId], references: [id], onDelete: SetNull)
-
-  pedidos Pedido[]
-
-  @@index([clienteId])
-  @@index([taxaEntregaId])
-  @@map("endereco")
+  @@index([customerId])
+  @@index([deliveryFeeId])
+  @@map("address")
 }
 
-model Categoria {
+model Category {
   id           Int      @id @default(autoincrement())
-  lanchoneteId Int      @map("lanchonete_id")
-  nome         String   @db.VarChar(120)
-  ativo        Boolean  @default(true)
+  restaurantId Int      @map("restaurant_id")
+  name         String   @db.VarChar(120)
+  active       Boolean  @default(true)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation( fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+  products   Product[]
 
-  produtos Produto[]
-
-  @@unique([lanchoneteId, nome])
-  @@index([lanchoneteId])
-  @@map("categoria")
+  @@unique([restaurantId, name])
+  @@index([restaurantId])
+  @@map("category")
 }
 
-model Produto {
+model Product {
   id          Int      @id @default(autoincrement())
-  categoriaId Int      @map("categoria_id")
-  nome        String   @db.VarChar(150)
-  preco       Decimal  @db.Decimal(10, 2)
-  descricao   String?
-  fotoUrl     String?  @map("foto_url") @db.VarChar(500)
-  ativo       Boolean  @default(true)
+  categoryId  Int      @map("category_id")
+  name        String   @db.VarChar(150)
+  price       Decimal  @db.Decimal(10, 2)
+  description String?
+  imageUrl    String?  @map("image_url") @db.VarChar(500)
+  active      Boolean  @default(true)
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  categoria Categoria @relation( fields: [categoriaId], references: [id], onDelete: Restrict)
+  category   Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  promotions Promotion[]
+  addOns     ProductAddOn[]
+  orderItems OrderItem[]
 
-
-  promocoes        Promocao[]
-  adicionais       ProdutoAdicional[]
-  itensPedido      ItemPedido[]
-
-  @@index([categoriaId])
-  @@index([ativo])
-  @@map("produto")
+  @@index([categoryId])
+  @@index([active])
+  @@map("product")
 }
 
-model Adicional {
+model AddOn {
   id           Int      @id @default(autoincrement())
-  lanchoneteId Int      @map("lanchonete_id")
-  nome         String   @db.VarChar(120)
-  preco        Decimal  @db.Decimal(10, 2)
-  ativo        Boolean  @default(true)
+  restaurantId Int      @map("restaurant_id")
+  name         String   @db.VarChar(120)
+  price        Decimal  @db.Decimal(10, 2)
+  active       Boolean  @default(true)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation(fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  restaurant Restaurant       @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+  products   ProductAddOn[]
+  orderItems OrderItemAddOn[]
 
-  produtos     ProdutoAdicional[]
-  itensPedido  ItemPedidoAdicional[]
-
-  @@unique([lanchoneteId, nome])
-  @@index([lanchoneteId])
-  @@map("adicional")
+  @@unique([restaurantId, name])
+  @@index([restaurantId])
+  @@map("add_on")
 }
 
-model ProdutoAdicional {
-  produtoId   Int      @map("produto_id")
-  adicionalId Int      @map("adicional_id")
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+model ProductAddOn {
+  productId Int      @map("product_id")
+  addOnId   Int      @map("add_on_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  produto Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  addOn   AddOn   @relation(fields: [addOnId], references: [id], onDelete: Cascade)
 
-  adicional Adicional @relation( fields: [adicionalId], references: [id], onDelete: Cascade)
-
-  @@id([produtoId, adicionalId])
-  @@index([adicionalId])
-  @@map("produto_adicional")
+  @@id([productId, addOnId])
+  @@index([addOnId])
+  @@map("product_add_on")
 }
 
-model Promocao {
-  id               Int       @id @default(autoincrement())
-  produtoId        Int       @map("produto_id")
-  diaSemana        DiaSemana @map("dia_semana")
-  precoPromocional Decimal   @map("preco_promocional") @db.Decimal(10, 2)
-  ativo            Boolean   @default(true)
-  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
-
-  produto Produto @relation( fields: [produtoId], references: [id], onDelete: Cascade)
-
-  @@unique([produtoId, diaSemana])
-  @@index([produtoId])
-  @@map("promocao")
-}
-
-model Pedido {
-  id               Int               @id @default(autoincrement())
-  lanchoneteId     Int               @map("lanchonete_id")
-  clienteId        Int?              @map("cliente_id")
-  enderecoId       Int?              @map("endereco_id")
-
-  origem           OrigemPedido
-  tipo             TipoPedido
-  formaPagamento   FormaPagamento    @map("forma_pagamento")
-  statusPedido     StatusPedido      @default(RECEBIDO) @map("status_pedido")
-  statusPagamento  StatusPagamento   @default(PENDENTE) @map("status_pagamento")
-
-  // Snapshot do cliente
-  clienteNome      String            @map("cliente_nome") @db.VarChar(120)
-  clienteTelefone  String            @map("cliente_telefone") @db.VarChar(20)
-
-  // Snapshot do endereço.
-  // Nullable porque pedidos RETIRADA não possuem endereço.
-  enderecoRua         String? @map("endereco_rua") @db.VarChar(150)
-  enderecoBairro      String? @map("endereco_bairro") @db.VarChar(120)
-  enderecoCidade      String? @map("endereco_cidade") @db.VarChar(120)
-  enderecoNumero      String? @map("endereco_numero") @db.VarChar(20)
-  enderecoComplemento String? @map("endereco_complemento") @db.VarChar(150)
-
-  subtotal         Decimal  @db.Decimal(10, 2)
-  taxaEntrega      Decimal  @default(0) @map("taxa_entrega") @db.Decimal(10, 2)
-  total            Decimal  @db.Decimal(10, 2)
-  observacao       String?
+model Promotion {
+  id               Int      @id @default(autoincrement())
+  productId        Int      @map("product_id")
+  weekday          Weekday
+  promotionalPrice Decimal  @map("promotional_price") @db.Decimal(10, 2)
+  active           Boolean  @default(true)
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  lanchonete Lanchonete @relation(fields: [lanchoneteId], references: [id], onDelete: Restrict)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  cliente Cliente? @relation(fields: [clienteId], references: [id], onDelete: SetNull)
-
-  endereco Endereco? @relation( fields: [enderecoId], references: [id], onDelete: SetNull)
-
-  itens ItemPedido[]
-
-  @@index([lanchoneteId])
-  @@index([clienteId])
-  @@index([enderecoId])
-  @@index([lanchoneteId, statusPedido])
-  @@index([lanchoneteId, createdAt])
-  @@map("pedido")
+  @@unique([productId, weekday])
+  @@index([productId])
+  @@map("promotion")
 }
 
-model ItemPedido {
-  id            Int      @id @default(autoincrement())
-  pedidoId      Int      @map("pedido_id")
-  produtoId     Int?     @map("produto_id")
+model Order {
+  id            Int           @id @default(autoincrement())
+  restaurantId  Int           @map("restaurant_id")
+  customerId    Int?          @map("customer_id")
+  addressId     Int?          @map("address_id")
+  source        OrderSource
+  type          OrderType
+  paymentMethod PaymentMethod @map("payment_method")
+  orderStatus   OrderStatus   @default(RECEIVED) @map("order_status")
+  paymentStatus PaymentStatus @default(PENDING) @map("payment_status")
 
-  // Snapshot do produto
-  produtoNome   String   @map("produto_nome") @db.VarChar(150)
-  quantidade    Int
-  precoOriginal Decimal  @map("preco_original") @db.Decimal(10, 2)
-  precoUnitario Decimal  @map("preco_unitario") @db.Decimal(10, 2)
-  observacao    String?
+  // Customer snapshot
+  customerName  String @map("customer_name") @db.VarChar(120)
+  customerPhone String @map("customer_phone") @db.VarChar(20)
 
-  pedido Pedido @relation(fields: [pedidoId], references: [id],onDelete: Restrict)
+  // Address snapshot. Nullable because pickup orders do not have an address.
+  addressStreet       String? @map("address_street") @db.VarChar(150)
+  addressNeighborhood String? @map("address_neighborhood") @db.VarChar(120)
+  addressCity         String? @map("address_city") @db.VarChar(120)
+  addressNumber       String? @map("address_number") @db.VarChar(20)
+  addressComplement   String? @map("address_complement") @db.VarChar(150)
 
-  produto Produto? @relation(fields: [produtoId], references: [id], onDelete: SetNull)
+  subtotal    Decimal  @db.Decimal(10, 2)
+  deliveryFee Decimal  @default(0) @map("delivery_fee") @db.Decimal(10, 2)
+  total       Decimal  @db.Decimal(10, 2)
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  adicionais ItemPedidoAdicional[]
+  restaurant Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+  customer   Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  address    Address?    @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  items      OrderItem[]
 
-  @@index([pedidoId])
-  @@index([produtoId])
-  @@map("item_pedido")
+  @@index([restaurantId])
+  @@index([customerId])
+  @@index([addressId])
+  @@index([restaurantId, orderStatus])
+  @@index([restaurantId, createdAt])
+  @@map("order")
 }
 
-model ItemPedidoAdicional {
-  id           Int     @id @default(autoincrement())
-  itemPedidoId Int     @map("item_pedido_id")
-  adicionalId  Int?    @map("adicional_id")
+model OrderItem {
+  id            Int     @id @default(autoincrement())
+  orderId       Int     @map("order_id")
+  productId     Int?    @map("product_id")
+  productName   String  @map("product_name") @db.VarChar(150)
+  quantity      Int
+  originalPrice Decimal @map("original_price") @db.Decimal(10, 2)
+  unitPrice     Decimal @map("unit_price") @db.Decimal(10, 2)
+  notes         String?
 
-  // Snapshot do adicional
-  nome         String  @db.VarChar(120)
-  precoUnitario Decimal @map("preco_unitario") @db.Decimal(10, 2)
-  quantidade    Int
+  order   Order            @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  product Product?         @relation(fields: [productId], references: [id], onDelete: SetNull)
+  addOns  OrderItemAddOn[]
 
-  itemPedido ItemPedido @relation(fields: [itemPedidoId], references: [id], onDelete: Restrict)
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_item")
+}
 
-  adicional Adicional? @relation( fields: [adicionalId], references: [id], onDelete: SetNull)
+model OrderItemAddOn {
+  id          Int     @id @default(autoincrement())
+  orderItemId Int     @map("order_item_id")
+  addOnId     Int?    @map("add_on_id")
+  name        String  @db.VarChar(120)
+  unitPrice   Decimal @map("unit_price") @db.Decimal(10, 2)
+  quantity    Int
 
-  @@index([itemPedidoId])
-  @@index([adicionalId])
-  @@map("item_pedido_adicional")
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Restrict)
+  addOn     AddOn?    @relation(fields: [addOnId], references: [id], onDelete: SetNull)
+
+  @@index([orderItemId])
+  @@index([addOnId])
+  @@map("order_item_add_on")
 }

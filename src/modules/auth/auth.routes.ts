@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validateData } from "../../middleware/validationMiddleware.js";
+import { validateData } from "../../middleware/validation-middleware.js";
 import { AuthController } from "./auth.controller.js";
 import { AuthRepository } from "./auth.repository.js";
 import { loginSchema } from "./auth.schema.js";

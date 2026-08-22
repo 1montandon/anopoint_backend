@@ -51,20 +51,20 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Lanchonete: 'Lanchonete',
-  Usuario: 'Usuario',
-  HorarioFuncionamento: 'HorarioFuncionamento',
-  TaxaEntrega: 'TaxaEntrega',
-  Cliente: 'Cliente',
-  Endereco: 'Endereco',
-  Categoria: 'Categoria',
-  Produto: 'Produto',
-  Adicional: 'Adicional',
-  ProdutoAdicional: 'ProdutoAdicional',
-  Promocao: 'Promocao',
-  Pedido: 'Pedido',
-  ItemPedido: 'ItemPedido',
-  ItemPedidoAdicional: 'ItemPedidoAdicional'
+  Restaurant: 'Restaurant',
+  User: 'User',
+  BusinessHour: 'BusinessHour',
+  DeliveryFee: 'DeliveryFee',
+  Customer: 'Customer',
+  Address: 'Address',
+  Category: 'Category',
+  Product: 'Product',
+  AddOn: 'AddOn',
+  ProductAddOn: 'ProductAddOn',
+  Promotion: 'Promotion',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
+  OrderItemAddOn: 'OrderItemAddOn'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -83,208 +83,208 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const LanchoneteScalarFieldEnum = {
+export const RestaurantScalarFieldEnum = {
   id: 'id',
-  nome: 'nome',
+  name: 'name',
   slug: 'slug',
   logoUrl: 'logoUrl',
-  telefone: 'telefone',
-  ativo: 'ativo',
-  aceitaDelivery: 'aceitaDelivery',
-  aceitaRetirada: 'aceitaRetirada',
-  pedidoMinimo: 'pedidoMinimo',
-  fusoHorario: 'fusoHorario',
+  phone: 'phone',
+  active: 'active',
+  acceptsDelivery: 'acceptsDelivery',
+  acceptsPickup: 'acceptsPickup',
+  minimumOrder: 'minimumOrder',
+  timeZone: 'timeZone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type LanchoneteScalarFieldEnum = (typeof LanchoneteScalarFieldEnum)[keyof typeof LanchoneteScalarFieldEnum]
+export type RestaurantScalarFieldEnum = (typeof RestaurantScalarFieldEnum)[keyof typeof RestaurantScalarFieldEnum]
 
 
-export const UsuarioScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  nome: 'nome',
+  restaurantId: 'restaurantId',
+  name: 'name',
   email: 'email',
-  senhaHash: 'senhaHash',
-  ativo: 'ativo',
+  passwordHash: 'passwordHash',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const HorarioFuncionamentoScalarFieldEnum = {
+export const BusinessHourScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  diaSemana: 'diaSemana',
-  horaAbertura: 'horaAbertura',
-  horaFechamento: 'horaFechamento',
-  fechado: 'fechado',
+  restaurantId: 'restaurantId',
+  weekday: 'weekday',
+  openingTime: 'openingTime',
+  closingTime: 'closingTime',
+  closed: 'closed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type HorarioFuncionamentoScalarFieldEnum = (typeof HorarioFuncionamentoScalarFieldEnum)[keyof typeof HorarioFuncionamentoScalarFieldEnum]
+export type BusinessHourScalarFieldEnum = (typeof BusinessHourScalarFieldEnum)[keyof typeof BusinessHourScalarFieldEnum]
 
 
-export const TaxaEntregaScalarFieldEnum = {
+export const DeliveryFeeScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  bairro: 'bairro',
-  valor: 'valor',
-  ativo: 'ativo',
+  restaurantId: 'restaurantId',
+  neighborhood: 'neighborhood',
+  amount: 'amount',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type TaxaEntregaScalarFieldEnum = (typeof TaxaEntregaScalarFieldEnum)[keyof typeof TaxaEntregaScalarFieldEnum]
+export type DeliveryFeeScalarFieldEnum = (typeof DeliveryFeeScalarFieldEnum)[keyof typeof DeliveryFeeScalarFieldEnum]
 
 
-export const ClienteScalarFieldEnum = {
+export const CustomerScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  nome: 'nome',
-  telefone: 'telefone',
+  restaurantId: 'restaurantId',
+  name: 'name',
+  phone: 'phone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ClienteScalarFieldEnum = (typeof ClienteScalarFieldEnum)[keyof typeof ClienteScalarFieldEnum]
+export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
-export const EnderecoScalarFieldEnum = {
+export const AddressScalarFieldEnum = {
   id: 'id',
-  clienteId: 'clienteId',
-  taxaEntregaId: 'taxaEntregaId',
-  rua: 'rua',
-  bairro: 'bairro',
-  cidade: 'cidade',
-  numero: 'numero',
-  complemento: 'complemento',
+  customerId: 'customerId',
+  deliveryFeeId: 'deliveryFeeId',
+  street: 'street',
+  neighborhood: 'neighborhood',
+  city: 'city',
+  number: 'number',
+  complement: 'complement',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type EnderecoScalarFieldEnum = (typeof EnderecoScalarFieldEnum)[keyof typeof EnderecoScalarFieldEnum]
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
 
 
-export const CategoriaScalarFieldEnum = {
+export const CategoryScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  nome: 'nome',
-  ativo: 'ativo',
+  restaurantId: 'restaurantId',
+  name: 'name',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type CategoriaScalarFieldEnum = (typeof CategoriaScalarFieldEnum)[keyof typeof CategoriaScalarFieldEnum]
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
-export const ProdutoScalarFieldEnum = {
+export const ProductScalarFieldEnum = {
   id: 'id',
-  categoriaId: 'categoriaId',
-  nome: 'nome',
-  preco: 'preco',
-  descricao: 'descricao',
-  fotoUrl: 'fotoUrl',
-  ativo: 'ativo',
+  categoryId: 'categoryId',
+  name: 'name',
+  price: 'price',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ProdutoScalarFieldEnum = (typeof ProdutoScalarFieldEnum)[keyof typeof ProdutoScalarFieldEnum]
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
-export const AdicionalScalarFieldEnum = {
+export const AddOnScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  nome: 'nome',
-  preco: 'preco',
-  ativo: 'ativo',
+  restaurantId: 'restaurantId',
+  name: 'name',
+  price: 'price',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type AdicionalScalarFieldEnum = (typeof AdicionalScalarFieldEnum)[keyof typeof AdicionalScalarFieldEnum]
+export type AddOnScalarFieldEnum = (typeof AddOnScalarFieldEnum)[keyof typeof AddOnScalarFieldEnum]
 
 
-export const ProdutoAdicionalScalarFieldEnum = {
-  produtoId: 'produtoId',
-  adicionalId: 'adicionalId',
+export const ProductAddOnScalarFieldEnum = {
+  productId: 'productId',
+  addOnId: 'addOnId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ProdutoAdicionalScalarFieldEnum = (typeof ProdutoAdicionalScalarFieldEnum)[keyof typeof ProdutoAdicionalScalarFieldEnum]
+export type ProductAddOnScalarFieldEnum = (typeof ProductAddOnScalarFieldEnum)[keyof typeof ProductAddOnScalarFieldEnum]
 
 
-export const PromocaoScalarFieldEnum = {
+export const PromotionScalarFieldEnum = {
   id: 'id',
-  produtoId: 'produtoId',
-  diaSemana: 'diaSemana',
-  precoPromocional: 'precoPromocional',
-  ativo: 'ativo',
+  productId: 'productId',
+  weekday: 'weekday',
+  promotionalPrice: 'promotionalPrice',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type PromocaoScalarFieldEnum = (typeof PromocaoScalarFieldEnum)[keyof typeof PromocaoScalarFieldEnum]
+export type PromotionScalarFieldEnum = (typeof PromotionScalarFieldEnum)[keyof typeof PromotionScalarFieldEnum]
 
 
-export const PedidoScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   id: 'id',
-  lanchoneteId: 'lanchoneteId',
-  clienteId: 'clienteId',
-  enderecoId: 'enderecoId',
-  origem: 'origem',
-  tipo: 'tipo',
-  formaPagamento: 'formaPagamento',
-  statusPedido: 'statusPedido',
-  statusPagamento: 'statusPagamento',
-  clienteNome: 'clienteNome',
-  clienteTelefone: 'clienteTelefone',
-  enderecoRua: 'enderecoRua',
-  enderecoBairro: 'enderecoBairro',
-  enderecoCidade: 'enderecoCidade',
-  enderecoNumero: 'enderecoNumero',
-  enderecoComplemento: 'enderecoComplemento',
+  restaurantId: 'restaurantId',
+  customerId: 'customerId',
+  addressId: 'addressId',
+  source: 'source',
+  type: 'type',
+  paymentMethod: 'paymentMethod',
+  orderStatus: 'orderStatus',
+  paymentStatus: 'paymentStatus',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  addressStreet: 'addressStreet',
+  addressNeighborhood: 'addressNeighborhood',
+  addressCity: 'addressCity',
+  addressNumber: 'addressNumber',
+  addressComplement: 'addressComplement',
   subtotal: 'subtotal',
-  taxaEntrega: 'taxaEntrega',
+  deliveryFee: 'deliveryFee',
   total: 'total',
-  observacao: 'observacao',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type PedidoScalarFieldEnum = (typeof PedidoScalarFieldEnum)[keyof typeof PedidoScalarFieldEnum]
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
-export const ItemPedidoScalarFieldEnum = {
+export const OrderItemScalarFieldEnum = {
   id: 'id',
-  pedidoId: 'pedidoId',
-  produtoId: 'produtoId',
-  produtoNome: 'produtoNome',
-  quantidade: 'quantidade',
-  precoOriginal: 'precoOriginal',
-  precoUnitario: 'precoUnitario',
-  observacao: 'observacao'
+  orderId: 'orderId',
+  productId: 'productId',
+  productName: 'productName',
+  quantity: 'quantity',
+  originalPrice: 'originalPrice',
+  unitPrice: 'unitPrice',
+  notes: 'notes'
 } as const
 
-export type ItemPedidoScalarFieldEnum = (typeof ItemPedidoScalarFieldEnum)[keyof typeof ItemPedidoScalarFieldEnum]
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
-export const ItemPedidoAdicionalScalarFieldEnum = {
+export const OrderItemAddOnScalarFieldEnum = {
   id: 'id',
-  itemPedidoId: 'itemPedidoId',
-  adicionalId: 'adicionalId',
-  nome: 'nome',
-  precoUnitario: 'precoUnitario',
-  quantidade: 'quantidade'
+  orderItemId: 'orderItemId',
+  addOnId: 'addOnId',
+  name: 'name',
+  unitPrice: 'unitPrice',
+  quantity: 'quantity'
 } as const
 
-export type ItemPedidoAdicionalScalarFieldEnum = (typeof ItemPedidoAdicionalScalarFieldEnum)[keyof typeof ItemPedidoAdicionalScalarFieldEnum]
+export type OrderItemAddOnScalarFieldEnum = (typeof OrderItemAddOnScalarFieldEnum)[keyof typeof OrderItemAddOnScalarFieldEnum]
 
 
 export const SortOrder = {

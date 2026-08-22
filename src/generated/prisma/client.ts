@@ -31,8 +31,8 @@ export * from "./enums.js"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Lanchonetes
- * const lanchonetes = await prisma.lanchonete.findMany()
+ * // Fetch zero or more Restaurants
+ * const restaurants = await prisma.restaurant.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -42,72 +42,72 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Lanchonete
+ * Model Restaurant
  * 
  */
-export type Lanchonete = Prisma.LanchoneteModel
+export type Restaurant = Prisma.RestaurantModel
 /**
- * Model Usuario
+ * Model User
  * 
  */
-export type Usuario = Prisma.UsuarioModel
+export type User = Prisma.UserModel
 /**
- * Model HorarioFuncionamento
+ * Model BusinessHour
  * 
  */
-export type HorarioFuncionamento = Prisma.HorarioFuncionamentoModel
+export type BusinessHour = Prisma.BusinessHourModel
 /**
- * Model TaxaEntrega
+ * Model DeliveryFee
  * 
  */
-export type TaxaEntrega = Prisma.TaxaEntregaModel
+export type DeliveryFee = Prisma.DeliveryFeeModel
 /**
- * Model Cliente
+ * Model Customer
  * 
  */
-export type Cliente = Prisma.ClienteModel
+export type Customer = Prisma.CustomerModel
 /**
- * Model Endereco
+ * Model Address
  * 
  */
-export type Endereco = Prisma.EnderecoModel
+export type Address = Prisma.AddressModel
 /**
- * Model Categoria
+ * Model Category
  * 
  */
-export type Categoria = Prisma.CategoriaModel
+export type Category = Prisma.CategoryModel
 /**
- * Model Produto
+ * Model Product
  * 
  */
-export type Produto = Prisma.ProdutoModel
+export type Product = Prisma.ProductModel
 /**
- * Model Adicional
+ * Model AddOn
  * 
  */
-export type Adicional = Prisma.AdicionalModel
+export type AddOn = Prisma.AddOnModel
 /**
- * Model ProdutoAdicional
+ * Model ProductAddOn
  * 
  */
-export type ProdutoAdicional = Prisma.ProdutoAdicionalModel
+export type ProductAddOn = Prisma.ProductAddOnModel
 /**
- * Model Promocao
+ * Model Promotion
  * 
  */
-export type Promocao = Prisma.PromocaoModel
+export type Promotion = Prisma.PromotionModel
 /**
- * Model Pedido
+ * Model Order
  * 
  */
-export type Pedido = Prisma.PedidoModel
+export type Order = Prisma.OrderModel
 /**
- * Model ItemPedido
+ * Model OrderItem
  * 
  */
-export type ItemPedido = Prisma.ItemPedidoModel
+export type OrderItem = Prisma.OrderItemModel
 /**
- * Model ItemPedidoAdicional
+ * Model OrderItemAddOn
  * 
  */
-export type ItemPedidoAdicional = Prisma.ItemPedidoAdicionalModel
+export type OrderItemAddOn = Prisma.OrderItemAddOnModel

@@ -10,3 +10,10 @@ export const loginSchema = z.object({
 export type LoginBody = z.infer<typeof loginSchema>["body"];
 
 export type LoginInput = LoginBody;
+
+export interface RefreshTokenPayload {
+  exp: number;
+  iat: number;
+  tokenId: string;
+  userId: string;
+}

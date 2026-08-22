@@ -1,36 +1,40 @@
 {
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "check": "ultracite check",
+    "dev": "tsx --watch --env-file=.env src/app.ts",
+    "fix": "ultracite fix",
+    "start": "node --env-file=.env dist/app.js"
+  },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.6",
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.2.0",
     "@types/pg": "^8.23.0",
     "prisma": "^7.9.1",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2",
     "ultracite": "^7.10.5"
-  },
-  "name": "backend",
-  "scripts": {
-    "dev": "tsx --watch --env-file=.env src/app.ts",
-    "build": "tsc",
-    "start": "node --env-file=.env dist/app.js",
-    "check": "ultracite check",
-    "fix": "ultracite fix"
-  },
-  "type": "module",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": []
+  }
 }
