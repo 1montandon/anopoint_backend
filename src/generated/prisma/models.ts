@@ -10,6 +10,7 @@
  */
 export type * from './models/Restaurant.js'
 export type * from './models/User.js'
+export type * from './models/RefreshToken.js'
 export type * from './models/BusinessHour.js'
 export type * from './models/DeliveryFee.js'
 export type * from './models/Customer.js'

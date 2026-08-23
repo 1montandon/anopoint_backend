@@ -9,10 +9,16 @@ export class AuthController {
   }
   login = async (req: Request<unknown, unknown, LoginBody>) => {
     const { email, password } = req.body;
+    const ipAddress = req.ip || "undefined";
+    const userAgent = req.get("user-agent") || "undefined";
 
-    await this.service.loginUser({
-      email,
-      password,
-    });
+    await this.service.loginUser(
+      {
+        email,
+        password,
+      },
+      ipAddress,
+      userAgent
+    );
   };
 }

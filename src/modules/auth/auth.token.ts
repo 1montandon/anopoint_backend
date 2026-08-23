@@ -8,7 +8,7 @@ export function signAccessToken(userId: number, restaurantId: number) {
   });
 }
 
-export function signRefreshToken(userId: string, tokenId: string) {
+export function signRefreshToken(userId: number, tokenId: number) {
   return jwt.sign({ tokenId, userId }, env.REFRESH_TOKEN_SECRET, {
     expiresIn: "7d",
   });

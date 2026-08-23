@@ -28,6 +28,11 @@ export type Restaurant = Prisma.RestaurantModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model RefreshToken
+ * 
+ */
+export type RefreshToken = Prisma.RefreshTokenModel
+/**
  * Model BusinessHour
  * 
  */

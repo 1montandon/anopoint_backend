@@ -476,10 +476,6 @@ export type EnumWeekdayFieldUpdateOperationsInput = {
   set?: $Enums.Weekday
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type BusinessHourCreateWithoutRestaurantInput = {
   weekday: $Enums.Weekday
   openingTime?: Date | string | null

@@ -8,4 +8,15 @@ export class AuthRepository {
       },
     });
   }
+
+  async createRefreshToken(
+    userId: number,
+    expiresAt: Date,
+    ipAddress?: string,
+    userAgent?: string
+  ) {
+    return await prisma.refreshToken.create({
+      data: { expiresAt, ipAddress, userAgent, userId },
+    });
+  }
 }

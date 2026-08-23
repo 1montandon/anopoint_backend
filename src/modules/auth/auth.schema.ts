@@ -14,6 +14,7 @@ export type LoginInput = LoginBody;
 export interface RefreshTokenPayload {
   exp: number;
   iat: number;
+  restaurantId: string;
   tokenId: string;
   userId: string;
 }
