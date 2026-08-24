@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt, { type JwtPayload } from "jsonwebtoken";
-import { env } from "../env.js";
 import HttpError from "../error/error.js";
+import { verifyAccessToken } from "../modules/auth/auth.token.js";
 
 export interface AuthRequest extends Request {
   restaurantId?: number;
@@ -20,14 +19,18 @@ export function authMiddleware(
   }
 
   const [, token] = authHeader.split(" ");
-  try {
-    const JWT_SECRET = env.ACCESS_TOKEN_SECRET;
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    console.log(decoded);
-    req.userId = decoded.userId;
-    req.restaurantId = decoded.restaurantId;
-    next();
-  } catch {
-    next(new HttpError(401, "Invalid token"));
+
+  if (!token) {
+    return next(new HttpError(401, "Invalid token"));
   }
+
+  const payload = verifyAccessToken(token);
+
+  if (!payload) {
+    return next(new HttpError(401, "Invalid token"));
+  }
+
+  req.userId = payload.userId;
+  req.restaurantId = payload.restaurantId;
+  next();
 }

@@ -7,13 +7,15 @@ export function validateData(schema: z.ZodObject) {
     try {
       const data = schema.parse({
         body: req.body,
+        cookies: req.cookies,
         params: req.params,
         query: req.query,
       });
 
       req.body = data.body ?? req.body;
       req.params = (data.params ?? req.params) as typeof req.params;
-      req.query = (data.query ?? req.query) as typeof req.query;
+      // req.query = (data.query ?? req.query) as typeof req.query;
+      req.cookies = (data.cookies ?? req.cookies) as typeof req.cookies;
 
       next();
     } catch (error) {
@@ -27,7 +29,6 @@ export function validateData(schema: z.ZodObject) {
           error: "Invalid data",
         });
       }
-
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         error: "Internal Server Error",
       });

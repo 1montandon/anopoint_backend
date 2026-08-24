@@ -7,14 +7,12 @@ export const loginSchema = z.object({
   }),
 });
 
-export type LoginBody = z.infer<typeof loginSchema>["body"];
+export const refreshTokenSchema = z.object({
+  cookies: z.object({
+    refreshToken: z.string().min(1),
+  }),
+});
 
-export type LoginInput = LoginBody;
+export type LoginInput = z.infer<typeof loginSchema>["body"];
 
-export interface RefreshTokenPayload {
-  exp: number;
-  iat: number;
-  restaurantId: string;
-  tokenId: string;
-  userId: string;
-}
+export type RefreshTokenInput = z.infer<typeof refreshTokenSchema>["cookies"];
